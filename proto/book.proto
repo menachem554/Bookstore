@@ -1,0 +1,54 @@
+// protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative book.proto
+
+syntax = "proto3";
+
+package book;
+
+option go_package = "github.com/menachem554/Bookstore";
+
+service Bookstore {
+    rpc CreateBook(CreateBookReq) returns (CreateBookRes);
+    rpc ReadBook(ReadBookReq) returns (ReadBookRes);
+    rpc UpdateBook(UpdateBookReq) returns (UpdateBookRes);
+    rpc DeleteBook(DeleteBookReq) returns (DeleteBookRes);
+}
+
+message Book {
+    string bookID= 1;
+    string book_name = 2;
+    string title = 3;
+    string author = 4;
+}
+
+message CreateBookReq {
+    Book book = 1;
+
+} 
+
+message CreateBookRes {
+    string oid = 1;
+}
+
+message ReadBookReq {
+    string id = 1;
+}
+
+message ReadBookRes {
+    Book book = 1;
+}
+
+message UpdateBookReq {
+    Book book = 1;
+}
+
+message UpdateBookRes {
+    string oid = 1;
+}
+
+message DeleteBookReq {
+    string id = 1;
+}
+
+message DeleteBookRes {
+    bool success = 1;
+}
