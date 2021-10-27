@@ -7,33 +7,33 @@ package book;
 option go_package = "github.com/menachem554/Bookstore";
 
 service Bookstore {
-    rpc CreateBook(CreateBookReq) returns (CreateBookRes);
-    rpc ReadBook(ReadBookReq) returns (ReadBookRes);
+    rpc PostBook(PostBookReq) returns (PostBookRes);
+    rpc GetBook(GetBookReq) returns (GetBookRes);
     rpc UpdateBook(UpdateBookReq) returns (UpdateBookRes);
     rpc DeleteBook(DeleteBookReq) returns (DeleteBookRes);
 }
 
 message Book {
     string bookID= 1;
-    string book_name = 2;
+    string bookName = 2;
     string title = 3;
     string author = 4;
 }
 
-message CreateBookReq {
+message PostBookReq {
     Book book = 1;
 
 } 
 
-message CreateBookRes {
+message PostBookRes {
     string oid = 1;
 }
 
-message ReadBookReq {
+message GetBookReq {
     string id = 1;
 }
 
-message ReadBookRes {
+message GetBookRes {
     Book book = 1;
 }
 
@@ -42,7 +42,7 @@ message UpdateBookReq {
 }
 
 message UpdateBookRes {
-    string oid = 1;
+    Book book = 1;
 }
 
 message DeleteBookReq {

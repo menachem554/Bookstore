@@ -18,8 +18,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BookstoreClient interface {
-	CreateBook(ctx context.Context, in *CreateBookReq, opts ...grpc.CallOption) (*CreateBookRes, error)
-	ReadBook(ctx context.Context, in *ReadBookReq, opts ...grpc.CallOption) (*ReadBookRes, error)
+	PostBook(ctx context.Context, in *PostBookReq, opts ...grpc.CallOption) (*PostBookRes, error)
+	GetBook(ctx context.Context, in *GetBookReq, opts ...grpc.CallOption) (*GetBookRes, error)
 	UpdateBook(ctx context.Context, in *UpdateBookReq, opts ...grpc.CallOption) (*UpdateBookRes, error)
 	DeleteBook(ctx context.Context, in *DeleteBookReq, opts ...grpc.CallOption) (*DeleteBookRes, error)
 }
@@ -32,18 +32,18 @@ func NewBookstoreClient(cc grpc.ClientConnInterface) BookstoreClient {
 	return &bookstoreClient{cc}
 }
 
-func (c *bookstoreClient) CreateBook(ctx context.Context, in *CreateBookReq, opts ...grpc.CallOption) (*CreateBookRes, error) {
-	out := new(CreateBookRes)
-	err := c.cc.Invoke(ctx, "/book.Bookstore/CreateBook", in, out, opts...)
+func (c *bookstoreClient) PostBook(ctx context.Context, in *PostBookReq, opts ...grpc.CallOption) (*PostBookRes, error) {
+	out := new(PostBookRes)
+	err := c.cc.Invoke(ctx, "/book.Bookstore/PostBook", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *bookstoreClient) ReadBook(ctx context.Context, in *ReadBookReq, opts ...grpc.CallOption) (*ReadBookRes, error) {
-	out := new(ReadBookRes)
-	err := c.cc.Invoke(ctx, "/book.Bookstore/ReadBook", in, out, opts...)
+func (c *bookstoreClient) GetBook(ctx context.Context, in *GetBookReq, opts ...grpc.CallOption) (*GetBookRes, error) {
+	out := new(GetBookRes)
+	err := c.cc.Invoke(ctx, "/book.Bookstore/GetBook", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -72,8 +72,8 @@ func (c *bookstoreClient) DeleteBook(ctx context.Context, in *DeleteBookReq, opt
 // All implementations must embed UnimplementedBookstoreServer
 // for forward compatibility
 type BookstoreServer interface {
-	CreateBook(context.Context, *CreateBookReq) (*CreateBookRes, error)
-	ReadBook(context.Context, *ReadBookReq) (*ReadBookRes, error)
+	PostBook(context.Context, *PostBookReq) (*PostBookRes, error)
+	GetBook(context.Context, *GetBookReq) (*GetBookRes, error)
 	UpdateBook(context.Context, *UpdateBookReq) (*UpdateBookRes, error)
 	DeleteBook(context.Context, *DeleteBookReq) (*DeleteBookRes, error)
 	mustEmbedUnimplementedBookstoreServer()
@@ -83,11 +83,11 @@ type BookstoreServer interface {
 type UnimplementedBookstoreServer struct {
 }
 
-func (UnimplementedBookstoreServer) CreateBook(context.Context, *CreateBookReq) (*CreateBookRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateBook not implemented")
+func (UnimplementedBookstoreServer) PostBook(context.Context, *PostBookReq) (*PostBookRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PostBook not implemented")
 }
-func (UnimplementedBookstoreServer) ReadBook(context.Context, *ReadBookReq) (*ReadBookRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReadBook not implemented")
+func (UnimplementedBookstoreServer) GetBook(context.Context, *GetBookReq) (*GetBookRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
 }
 func (UnimplementedBookstoreServer) UpdateBook(context.Context, *UpdateBookReq) (*UpdateBookRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBook not implemented")
@@ -108,38 +108,38 @@ func RegisterBookstoreServer(s grpc.ServiceRegistrar, srv BookstoreServer) {
 	s.RegisterService(&Bookstore_ServiceDesc, srv)
 }
 
-func _Bookstore_CreateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateBookReq)
+func _Bookstore_PostBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PostBookReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookstoreServer).CreateBook(ctx, in)
+		return srv.(BookstoreServer).PostBook(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/book.Bookstore/CreateBook",
+		FullMethod: "/book.Bookstore/PostBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookstoreServer).CreateBook(ctx, req.(*CreateBookReq))
+		return srv.(BookstoreServer).PostBook(ctx, req.(*PostBookReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Bookstore_ReadBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReadBookReq)
+func _Bookstore_GetBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBookReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(BookstoreServer).ReadBook(ctx, in)
+		return srv.(BookstoreServer).GetBook(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/book.Bookstore/ReadBook",
+		FullMethod: "/book.Bookstore/GetBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookstoreServer).ReadBook(ctx, req.(*ReadBookReq))
+		return srv.(BookstoreServer).GetBook(ctx, req.(*GetBookReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -188,12 +188,12 @@ var Bookstore_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*BookstoreServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateBook",
-			Handler:    _Bookstore_CreateBook_Handler,
+			MethodName: "PostBook",
+			Handler:    _Bookstore_PostBook_Handler,
 		},
 		{
-			MethodName: "ReadBook",
-			Handler:    _Bookstore_ReadBook_Handler,
+			MethodName: "GetBook",
+			Handler:    _Bookstore_GetBook_Handler,
 		},
 		{
 			MethodName: "UpdateBook",
