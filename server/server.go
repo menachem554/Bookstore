@@ -23,7 +23,7 @@ type Bookstore struct {
 	pb.UnimplementedBookstoreServer
 }
 
-// mongo seeting
+// mongo setting
 var db *mongo.Client
 var bookDB *mongo.Collection
 var mongoCtx context.Context
