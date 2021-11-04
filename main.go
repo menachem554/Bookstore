@@ -101,10 +101,10 @@ func (s *Bookstore) UpdateBook(ctx context.Context, req *pb.UpdateBookReq) (*pb.
 
 	return &pb.UpdateBookRes{
 		Book: &pb.Book{
-			BookID:   book.BookID,
-			BookName: book.BookName,
-			Title:    book.Title,
-			Author:   book.Author,
+			BookID:   req.GetBook().BookID,
+			BookName: req.GetBook().BookName,
+			Title:    req.GetBook().Title,
+			Author:   req.GetBook().Author,
 		},
 	}, nil
 }
