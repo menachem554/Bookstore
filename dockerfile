@@ -1,17 +1,24 @@
-# syntax=docker/dockerfile:1
+FROM golang:1.12-alpine
 
-FROM golang:1.16-alpine
+RUN apk add --no-cache git
 
-WORKDIR /app
+# Set the Current Working Directory inside the container
+WORKDIR /app/Bookstore
 
-COPY go.mod ./
-COPY go.sum ./
+# We want to populate the module cache based on the go.{mod,sum} files.
+COPY go.mod .
+COPY go.sum .
+
 RUN go mod download
 
-COPY *.go ./
+COPY . .
 
-RUN go build -o /Bokkstore
+# Build the Go app
+RUN go build -o ./out/Bookstore .
 
+
+# This container exposes port 9090 to the outside world
 EXPOSE 9090
 
-CMD [ "/Bookstore" ]
+# Run the binary program produced by `go install`
+CMD ["./out/Bookstore"]
