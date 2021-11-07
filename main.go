@@ -136,7 +136,7 @@ func main() {
 
 	// Connect to mongoDB
 	mongoCtx = context.Background()
-	db, err = mongo.Connect(mongoCtx, options.Client().ApplyURI("mongodb://localhost:27017"))
+	db, err = mongo.Connect(mongoCtx, options.Client().ApplyURI("mongodb://mongo:27017"))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,24 +1,22 @@
-FROM golang:1.12-alpine
+# Pull base image
+FROM golang:alpine
 
-RUN apk add --no-cache git
+# Install git
+RUN apk update && apk add --no-cache git
 
-# Set the Current Working Directory inside the container
-WORKDIR /app/Bookstore
+# Where our files will be in the docker container 
+WORKDIR /opt/bookstore
 
-# We want to populate the module cache based on the go.{mod,sum} files.
-COPY go.mod .
-COPY go.sum .
-
-RUN go mod download
-
+# Copy the source from the current directory to the working Directory inside the container 
+# Source also contains go.mod and go.sum which are dependency files
 COPY . .
 
-# Build the Go app
-RUN go build -o ./out/Bookstore .
+# Get Dependency
+RUN go mod download
 
+# Install Air for hot reload
+RUN go get -u github.com/cosmtrek/air
 
-# This container exposes port 9090 to the outside world
-EXPOSE 9090
-
-# Run the binary program produced by `go install`
-CMD ["./out/Bookstore"]
+# The ENTRYPOINT defines the command that will be ran when the container starts up
+# In this case air command for hot reload go apps on file changes
+ENTRYPOINT air
