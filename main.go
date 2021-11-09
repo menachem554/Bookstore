@@ -67,7 +67,7 @@ func (s *Bookstore) GetBook(ctx context.Context, req *pb.GetBookReq) (*pb.GetBoo
 	// decode and Check for error
 	if err := searchResult.Decode(&book); err != nil {
 		return nil,
-		status.Errorf(codes.NotFound, fmt.Sprintf("Could not find book with bookID %s: %v", req.GetId(), err))
+			status.Errorf(codes.NotFound, fmt.Sprintf("Could not find book with bookID %s: %v", req.GetId(), err))
 	}
 
 	fmt.Println("Get book result", book)
@@ -81,7 +81,7 @@ func (s *Bookstore) GetBook(ctx context.Context, req *pb.GetBookReq) (*pb.GetBoo
 	}, nil
 }
 func (s *Bookstore) UpdateBook(ctx context.Context, req *pb.UpdateBookReq) (*pb.UpdateBookRes, error) {
-	// 
+	//
 	updateBook := bson.M{
 		"bookid":   req.GetBook().BookID,
 		"bookname": req.GetBook().BookName,
@@ -109,15 +109,30 @@ func (s *Bookstore) UpdateBook(ctx context.Context, req *pb.UpdateBookReq) (*pb.
 	}, nil
 }
 func (s *Bookstore) DeleteBook(ctx context.Context, req *pb.DeleteBookReq) (*pb.DeleteBookRes, error) {
-	// 
-	delete, err := bookDB.DeleteOne(ctx, bson.M{"bookid":req.GetId()})
+	//
+	delete, err := bookDB.DeleteOne(ctx, bson.M{"bookid": req.GetId()})
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println("Book deleted: ", delete.DeletedCount)
 
-	return &pb.DeleteBookRes{Success: true,}, nil
+	return &pb.DeleteBookRes{Success: true}, nil
+}
+
+func (s *Bookstore) GetAllBooks(ctx context.Context, req *pb.GetAllReq) (*pb.GetAllRes, error) {
+	cursor, err := bookDB.Find(ctx, bson.M{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	var book []bson.M
+	if err = cursor.All(ctx, &book); err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(book)
+
+	return &pb.GetAllRes{}, nil
+
 }
 
 func main() {

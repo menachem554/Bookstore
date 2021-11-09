@@ -11,6 +11,7 @@ service Bookstore {
     rpc GetBook(GetBookReq) returns (GetBookRes);
     rpc UpdateBook(UpdateBookReq) returns (UpdateBookRes);
     rpc DeleteBook(DeleteBookReq) returns (DeleteBookRes);
+    rpc GetAllBooks(GetAllReq) returns (GetAllRes);
 }
 
 message Book {
@@ -51,4 +52,12 @@ message DeleteBookReq {
 
 message DeleteBookRes {
     bool success = 1;
+}
+
+message GetAllReq{
+
+}
+
+message GetAllRes {
+   repeated Book book = 1;
 }
