@@ -93,7 +93,7 @@ func (x *Book) GetAuthor() string {
 	return ""
 }
 
-type PostBookReq struct {
+type BookRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -101,8 +101,8 @@ type PostBookReq struct {
 	Book *Book `protobuf:"bytes,1,opt,name=book,proto3" json:"book,omitempty"`
 }
 
-func (x *PostBookReq) Reset() {
-	*x = PostBookReq{}
+func (x *BookRequest) Reset() {
+	*x = BookRequest{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_book_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -110,13 +110,13 @@ func (x *PostBookReq) Reset() {
 	}
 }
 
-func (x *PostBookReq) String() string {
+func (x *BookRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostBookReq) ProtoMessage() {}
+func (*BookRequest) ProtoMessage() {}
 
-func (x *PostBookReq) ProtoReflect() protoreflect.Message {
+func (x *BookRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_book_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -128,28 +128,28 @@ func (x *PostBookReq) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PostBookReq.ProtoReflect.Descriptor instead.
-func (*PostBookReq) Descriptor() ([]byte, []int) {
+// Deprecated: Use BookRequest.ProtoReflect.Descriptor instead.
+func (*BookRequest) Descriptor() ([]byte, []int) {
 	return file_book_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PostBookReq) GetBook() *Book {
+func (x *BookRequest) GetBook() *Book {
 	if x != nil {
 		return x.Book
 	}
 	return nil
 }
 
-type PostBookRes struct {
+type BookResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Oid string `protobuf:"bytes,1,opt,name=oid,proto3" json:"oid,omitempty"`
+	Book *Book `protobuf:"bytes,1,opt,name=book,proto3" json:"book,omitempty"`
 }
 
-func (x *PostBookRes) Reset() {
-	*x = PostBookRes{}
+func (x *BookResponse) Reset() {
+	*x = BookResponse{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_book_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -157,13 +157,13 @@ func (x *PostBookRes) Reset() {
 	}
 }
 
-func (x *PostBookRes) String() string {
+func (x *BookResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PostBookRes) ProtoMessage() {}
+func (*BookResponse) ProtoMessage() {}
 
-func (x *PostBookRes) ProtoReflect() protoreflect.Message {
+func (x *BookResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_book_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -175,16 +175,16 @@ func (x *PostBookRes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PostBookRes.ProtoReflect.Descriptor instead.
-func (*PostBookRes) Descriptor() ([]byte, []int) {
+// Deprecated: Use BookResponse.ProtoReflect.Descriptor instead.
+func (*BookResponse) Descriptor() ([]byte, []int) {
 	return file_book_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *PostBookRes) GetOid() string {
+func (x *BookResponse) GetBook() *Book {
 	if x != nil {
-		return x.Oid
+		return x.Book
 	}
-	return ""
+	return nil
 }
 
 type GetBookReq struct {
@@ -234,206 +234,18 @@ func (x *GetBookReq) GetId() string {
 	return ""
 }
 
-type GetBookRes struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Book *Book `protobuf:"bytes,1,opt,name=book,proto3" json:"book,omitempty"`
-}
-
-func (x *GetBookRes) Reset() {
-	*x = GetBookRes{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_book_proto_msgTypes[4]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *GetBookRes) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetBookRes) ProtoMessage() {}
-
-func (x *GetBookRes) ProtoReflect() protoreflect.Message {
-	mi := &file_book_proto_msgTypes[4]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetBookRes.ProtoReflect.Descriptor instead.
-func (*GetBookRes) Descriptor() ([]byte, []int) {
-	return file_book_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *GetBookRes) GetBook() *Book {
-	if x != nil {
-		return x.Book
-	}
-	return nil
-}
-
-type UpdateBookReq struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Book *Book `protobuf:"bytes,1,opt,name=book,proto3" json:"book,omitempty"`
-}
-
-func (x *UpdateBookReq) Reset() {
-	*x = UpdateBookReq{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_book_proto_msgTypes[5]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *UpdateBookReq) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateBookReq) ProtoMessage() {}
-
-func (x *UpdateBookReq) ProtoReflect() protoreflect.Message {
-	mi := &file_book_proto_msgTypes[5]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateBookReq.ProtoReflect.Descriptor instead.
-func (*UpdateBookReq) Descriptor() ([]byte, []int) {
-	return file_book_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *UpdateBookReq) GetBook() *Book {
-	if x != nil {
-		return x.Book
-	}
-	return nil
-}
-
-type UpdateBookRes struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Book *Book `protobuf:"bytes,1,opt,name=book,proto3" json:"book,omitempty"`
-}
-
-func (x *UpdateBookRes) Reset() {
-	*x = UpdateBookRes{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_book_proto_msgTypes[6]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *UpdateBookRes) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateBookRes) ProtoMessage() {}
-
-func (x *UpdateBookRes) ProtoReflect() protoreflect.Message {
-	mi := &file_book_proto_msgTypes[6]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateBookRes.ProtoReflect.Descriptor instead.
-func (*UpdateBookRes) Descriptor() ([]byte, []int) {
-	return file_book_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateBookRes) GetBook() *Book {
-	if x != nil {
-		return x.Book
-	}
-	return nil
-}
-
-type DeleteBookReq struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-}
-
-func (x *DeleteBookReq) Reset() {
-	*x = DeleteBookReq{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_book_proto_msgTypes[7]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *DeleteBookReq) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteBookReq) ProtoMessage() {}
-
-func (x *DeleteBookReq) ProtoReflect() protoreflect.Message {
-	mi := &file_book_proto_msgTypes[7]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteBookReq.ProtoReflect.Descriptor instead.
-func (*DeleteBookReq) Descriptor() ([]byte, []int) {
-	return file_book_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *DeleteBookReq) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
 type DeleteBookRes struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Success bool `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Deleted int64 `protobuf:"varint,1,opt,name=deleted,proto3" json:"deleted,omitempty"`
 }
 
 func (x *DeleteBookRes) Reset() {
 	*x = DeleteBookRes{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_book_proto_msgTypes[8]
+		mi := &file_book_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -446,7 +258,7 @@ func (x *DeleteBookRes) String() string {
 func (*DeleteBookRes) ProtoMessage() {}
 
 func (x *DeleteBookRes) ProtoReflect() protoreflect.Message {
-	mi := &file_book_proto_msgTypes[8]
+	mi := &file_book_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -459,14 +271,14 @@ func (x *DeleteBookRes) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteBookRes.ProtoReflect.Descriptor instead.
 func (*DeleteBookRes) Descriptor() ([]byte, []int) {
-	return file_book_proto_rawDescGZIP(), []int{8}
+	return file_book_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *DeleteBookRes) GetSuccess() bool {
+func (x *DeleteBookRes) GetDeleted() int64 {
 	if x != nil {
-		return x.Success
+		return x.Deleted
 	}
-	return false
+	return 0
 }
 
 type GetAllReq struct {
@@ -478,7 +290,7 @@ type GetAllReq struct {
 func (x *GetAllReq) Reset() {
 	*x = GetAllReq{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_book_proto_msgTypes[9]
+		mi := &file_book_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -491,7 +303,7 @@ func (x *GetAllReq) String() string {
 func (*GetAllReq) ProtoMessage() {}
 
 func (x *GetAllReq) ProtoReflect() protoreflect.Message {
-	mi := &file_book_proto_msgTypes[9]
+	mi := &file_book_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -504,54 +316,7 @@ func (x *GetAllReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllReq.ProtoReflect.Descriptor instead.
 func (*GetAllReq) Descriptor() ([]byte, []int) {
-	return file_book_proto_rawDescGZIP(), []int{9}
-}
-
-type GetAllRes struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Book []*Book `protobuf:"bytes,1,rep,name=book,proto3" json:"book,omitempty"`
-}
-
-func (x *GetAllRes) Reset() {
-	*x = GetAllRes{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_book_proto_msgTypes[10]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *GetAllRes) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetAllRes) ProtoMessage() {}
-
-func (x *GetAllRes) ProtoReflect() protoreflect.Message {
-	mi := &file_book_proto_msgTypes[10]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetAllRes.ProtoReflect.Descriptor instead.
-func (*GetAllRes) Descriptor() ([]byte, []int) {
-	return file_book_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *GetAllRes) GetBook() []*Book {
-	if x != nil {
-		return x.Book
-	}
-	return nil
+	return file_book_proto_rawDescGZIP(), []int{5}
 }
 
 var File_book_proto protoreflect.FileDescriptor
@@ -565,50 +330,37 @@ var file_book_proto_rawDesc = []byte{
 	0x0a, 0x05, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74,
 	0x69, 0x74, 0x6c, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x18, 0x04,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x61, 0x75, 0x74, 0x68, 0x6f, 0x72, 0x22, 0x2d, 0x0a, 0x0b,
-	0x50, 0x6f, 0x73, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x12, 0x1e, 0x0a, 0x04, 0x62,
+	0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1e, 0x0a, 0x04, 0x62,
 	0x6f, 0x6f, 0x6b, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x62, 0x6f, 0x6f, 0x6b,
-	0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6b, 0x22, 0x1f, 0x0a, 0x0b, 0x50,
-	0x6f, 0x73, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12, 0x10, 0x0a, 0x03, 0x6f, 0x69,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6f, 0x69, 0x64, 0x22, 0x1c, 0x0a, 0x0a,
-	0x47, 0x65, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x2c, 0x0a, 0x0a, 0x47, 0x65,
-	0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12, 0x1e, 0x0a, 0x04, 0x62, 0x6f, 0x6f, 0x6b,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x42, 0x6f,
-	0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6b, 0x22, 0x2f, 0x0a, 0x0d, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x12, 0x1e, 0x0a, 0x04, 0x62, 0x6f, 0x6f,
-	0x6b, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x42,
-	0x6f, 0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6b, 0x22, 0x2f, 0x0a, 0x0d, 0x55, 0x70, 0x64,
-	0x61, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12, 0x1e, 0x0a, 0x04, 0x62, 0x6f,
-	0x6f, 0x6b, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e,
-	0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6b, 0x22, 0x1f, 0x0a, 0x0d, 0x44, 0x65,
-	0x6c, 0x65, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69,
-	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x29, 0x0a, 0x0d, 0x44,
-	0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12, 0x18, 0x0a, 0x07,
-	0x73, 0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x07, 0x73,
-	0x75, 0x63, 0x63, 0x65, 0x73, 0x73, 0x22, 0x0b, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c,
-	0x52, 0x65, 0x71, 0x22, 0x2b, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73,
-	0x12, 0x1e, 0x0a, 0x04, 0x62, 0x6f, 0x6f, 0x6b, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x0a,
-	0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6b,
-	0x32, 0x8d, 0x02, 0x0a, 0x09, 0x42, 0x6f, 0x6f, 0x6b, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x12, 0x30,
-	0x0a, 0x08, 0x50, 0x6f, 0x73, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x12, 0x11, 0x2e, 0x62, 0x6f, 0x6f,
-	0x6b, 0x2e, 0x50, 0x6f, 0x73, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x1a, 0x11, 0x2e,
-	0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x50, 0x6f, 0x73, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73,
-	0x12, 0x2d, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x12, 0x10, 0x2e, 0x62, 0x6f,
-	0x6f, 0x6b, 0x2e, 0x47, 0x65, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x1a, 0x10, 0x2e,
-	0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x47, 0x65, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12,
-	0x36, 0x0a, 0x0a, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x12, 0x13, 0x2e,
-	0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52,
-	0x65, 0x71, 0x1a, 0x13, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12, 0x36, 0x0a, 0x0a, 0x44, 0x65, 0x6c, 0x65, 0x74,
-	0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x12, 0x13, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x44, 0x65, 0x6c,
-	0x65, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x1a, 0x13, 0x2e, 0x62, 0x6f, 0x6f,
-	0x6b, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12,
-	0x2f, 0x0a, 0x0b, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x6f, 0x6f, 0x6b, 0x73, 0x12, 0x0f,
-	0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x1a,
-	0x0f, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x73,
-	0x42, 0x22, 0x5a, 0x20, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6d,
-	0x65, 0x6e, 0x61, 0x63, 0x68, 0x65, 0x6d, 0x35, 0x35, 0x34, 0x2f, 0x42, 0x6f, 0x6f, 0x6b, 0x73,
-	0x74, 0x6f, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6b, 0x22, 0x2e, 0x0a, 0x0c, 0x42,
+	0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1e, 0x0a, 0x04, 0x62,
+	0x6f, 0x6f, 0x6b, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x62, 0x6f, 0x6f, 0x6b,
+	0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x04, 0x62, 0x6f, 0x6f, 0x6b, 0x22, 0x1c, 0x0a, 0x0a, 0x47,
+	0x65, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x22, 0x29, 0x0a, 0x0d, 0x44, 0x65, 0x6c,
+	0x65, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x64, 0x65,
+	0x6c, 0x65, 0x74, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x07, 0x64, 0x65, 0x6c,
+	0x65, 0x74, 0x65, 0x64, 0x22, 0x0b, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65,
+	0x71, 0x32, 0x8f, 0x02, 0x0a, 0x09, 0x42, 0x6f, 0x6f, 0x6b, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x12,
+	0x31, 0x0a, 0x08, 0x50, 0x6f, 0x73, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x12, 0x11, 0x2e, 0x62, 0x6f,
+	0x6f, 0x6b, 0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x12,
+	0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x2f, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x12, 0x10, 0x2e,
+	0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x47, 0x65, 0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x1a,
+	0x12, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x33, 0x0a, 0x0a, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x42, 0x6f, 0x6f,
+	0x6b, 0x12, 0x11, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x1a, 0x12, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x42, 0x6f, 0x6f, 0x6b,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x33, 0x0a, 0x0a, 0x44, 0x65, 0x6c, 0x65,
+	0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x12, 0x10, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x47, 0x65,
+	0x74, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x71, 0x1a, 0x13, 0x2e, 0x62, 0x6f, 0x6f, 0x6b, 0x2e,
+	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x12, 0x34, 0x0a,
+	0x0b, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x42, 0x6f, 0x6f, 0x6b, 0x73, 0x12, 0x0f, 0x2e, 0x62,
+	0x6f, 0x6f, 0x6b, 0x2e, 0x47, 0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x1a, 0x12, 0x2e,
+	0x62, 0x6f, 0x6f, 0x6b, 0x2e, 0x42, 0x6f, 0x6f, 0x6b, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x30, 0x01, 0x42, 0x22, 0x5a, 0x20, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
+	0x6d, 0x2f, 0x6d, 0x65, 0x6e, 0x61, 0x63, 0x68, 0x65, 0x6d, 0x35, 0x35, 0x34, 0x2f, 0x42, 0x6f,
+	0x6f, 0x6b, 0x73, 0x74, 0x6f, 0x72, 0x65, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -623,41 +375,33 @@ func file_book_proto_rawDescGZIP() []byte {
 	return file_book_proto_rawDescData
 }
 
-var file_book_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_book_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_book_proto_goTypes = []interface{}{
 	(*Book)(nil),          // 0: book.Book
-	(*PostBookReq)(nil),   // 1: book.PostBookReq
-	(*PostBookRes)(nil),   // 2: book.PostBookRes
+	(*BookRequest)(nil),   // 1: book.BookRequest
+	(*BookResponse)(nil),  // 2: book.BookResponse
 	(*GetBookReq)(nil),    // 3: book.GetBookReq
-	(*GetBookRes)(nil),    // 4: book.GetBookRes
-	(*UpdateBookReq)(nil), // 5: book.UpdateBookReq
-	(*UpdateBookRes)(nil), // 6: book.UpdateBookRes
-	(*DeleteBookReq)(nil), // 7: book.DeleteBookReq
-	(*DeleteBookRes)(nil), // 8: book.DeleteBookRes
-	(*GetAllReq)(nil),     // 9: book.GetAllReq
-	(*GetAllRes)(nil),     // 10: book.GetAllRes
+	(*DeleteBookRes)(nil), // 4: book.DeleteBookRes
+	(*GetAllReq)(nil),     // 5: book.GetAllReq
 }
 var file_book_proto_depIdxs = []int32{
-	0,  // 0: book.PostBookReq.book:type_name -> book.Book
-	0,  // 1: book.GetBookRes.book:type_name -> book.Book
-	0,  // 2: book.UpdateBookReq.book:type_name -> book.Book
-	0,  // 3: book.UpdateBookRes.book:type_name -> book.Book
-	0,  // 4: book.GetAllRes.book:type_name -> book.Book
-	1,  // 5: book.Bookstore.PostBook:input_type -> book.PostBookReq
-	3,  // 6: book.Bookstore.GetBook:input_type -> book.GetBookReq
-	5,  // 7: book.Bookstore.UpdateBook:input_type -> book.UpdateBookReq
-	7,  // 8: book.Bookstore.DeleteBook:input_type -> book.DeleteBookReq
-	9,  // 9: book.Bookstore.GetAllBooks:input_type -> book.GetAllReq
-	2,  // 10: book.Bookstore.PostBook:output_type -> book.PostBookRes
-	4,  // 11: book.Bookstore.GetBook:output_type -> book.GetBookRes
-	6,  // 12: book.Bookstore.UpdateBook:output_type -> book.UpdateBookRes
-	8,  // 13: book.Bookstore.DeleteBook:output_type -> book.DeleteBookRes
-	10, // 14: book.Bookstore.GetAllBooks:output_type -> book.GetAllRes
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	0, // 0: book.BookRequest.book:type_name -> book.Book
+	0, // 1: book.BookResponse.book:type_name -> book.Book
+	1, // 2: book.Bookstore.PostBook:input_type -> book.BookRequest
+	3, // 3: book.Bookstore.GetBook:input_type -> book.GetBookReq
+	1, // 4: book.Bookstore.UpdateBook:input_type -> book.BookRequest
+	3, // 5: book.Bookstore.DeleteBook:input_type -> book.GetBookReq
+	5, // 6: book.Bookstore.GetAllBooks:input_type -> book.GetAllReq
+	2, // 7: book.Bookstore.PostBook:output_type -> book.BookResponse
+	2, // 8: book.Bookstore.GetBook:output_type -> book.BookResponse
+	2, // 9: book.Bookstore.UpdateBook:output_type -> book.BookResponse
+	4, // 10: book.Bookstore.DeleteBook:output_type -> book.DeleteBookRes
+	2, // 11: book.Bookstore.GetAllBooks:output_type -> book.BookResponse
+	7, // [7:12] is the sub-list for method output_type
+	2, // [2:7] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_book_proto_init() }
@@ -679,7 +423,7 @@ func file_book_proto_init() {
 			}
 		}
 		file_book_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostBookReq); i {
+			switch v := v.(*BookRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -691,7 +435,7 @@ func file_book_proto_init() {
 			}
 		}
 		file_book_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PostBookRes); i {
+			switch v := v.(*BookResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -715,54 +459,6 @@ func file_book_proto_init() {
 			}
 		}
 		file_book_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetBookRes); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_book_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateBookReq); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_book_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateBookRes); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_book_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteBookReq); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_book_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*DeleteBookRes); i {
 			case 0:
 				return &v.state
@@ -774,20 +470,8 @@ func file_book_proto_init() {
 				return nil
 			}
 		}
-		file_book_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+		file_book_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*GetAllReq); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_book_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetAllRes); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -805,7 +489,7 @@ func file_book_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_book_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

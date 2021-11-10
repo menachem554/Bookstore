@@ -18,11 +18,11 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BookstoreClient interface {
-	PostBook(ctx context.Context, in *PostBookReq, opts ...grpc.CallOption) (*PostBookRes, error)
-	GetBook(ctx context.Context, in *GetBookReq, opts ...grpc.CallOption) (*GetBookRes, error)
-	UpdateBook(ctx context.Context, in *UpdateBookReq, opts ...grpc.CallOption) (*UpdateBookRes, error)
-	DeleteBook(ctx context.Context, in *DeleteBookReq, opts ...grpc.CallOption) (*DeleteBookRes, error)
-	GetAllBooks(ctx context.Context, in *GetAllReq, opts ...grpc.CallOption) (*GetAllRes, error)
+	PostBook(ctx context.Context, in *BookRequest, opts ...grpc.CallOption) (*BookResponse, error)
+	GetBook(ctx context.Context, in *GetBookReq, opts ...grpc.CallOption) (*BookResponse, error)
+	UpdateBook(ctx context.Context, in *BookRequest, opts ...grpc.CallOption) (*BookResponse, error)
+	DeleteBook(ctx context.Context, in *GetBookReq, opts ...grpc.CallOption) (*DeleteBookRes, error)
+	GetAllBooks(ctx context.Context, in *GetAllReq, opts ...grpc.CallOption) (Bookstore_GetAllBooksClient, error)
 }
 
 type bookstoreClient struct {
@@ -33,8 +33,8 @@ func NewBookstoreClient(cc grpc.ClientConnInterface) BookstoreClient {
 	return &bookstoreClient{cc}
 }
 
-func (c *bookstoreClient) PostBook(ctx context.Context, in *PostBookReq, opts ...grpc.CallOption) (*PostBookRes, error) {
-	out := new(PostBookRes)
+func (c *bookstoreClient) PostBook(ctx context.Context, in *BookRequest, opts ...grpc.CallOption) (*BookResponse, error) {
+	out := new(BookResponse)
 	err := c.cc.Invoke(ctx, "/book.Bookstore/PostBook", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -42,8 +42,8 @@ func (c *bookstoreClient) PostBook(ctx context.Context, in *PostBookReq, opts ..
 	return out, nil
 }
 
-func (c *bookstoreClient) GetBook(ctx context.Context, in *GetBookReq, opts ...grpc.CallOption) (*GetBookRes, error) {
-	out := new(GetBookRes)
+func (c *bookstoreClient) GetBook(ctx context.Context, in *GetBookReq, opts ...grpc.CallOption) (*BookResponse, error) {
+	out := new(BookResponse)
 	err := c.cc.Invoke(ctx, "/book.Bookstore/GetBook", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -51,8 +51,8 @@ func (c *bookstoreClient) GetBook(ctx context.Context, in *GetBookReq, opts ...g
 	return out, nil
 }
 
-func (c *bookstoreClient) UpdateBook(ctx context.Context, in *UpdateBookReq, opts ...grpc.CallOption) (*UpdateBookRes, error) {
-	out := new(UpdateBookRes)
+func (c *bookstoreClient) UpdateBook(ctx context.Context, in *BookRequest, opts ...grpc.CallOption) (*BookResponse, error) {
+	out := new(BookResponse)
 	err := c.cc.Invoke(ctx, "/book.Bookstore/UpdateBook", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (c *bookstoreClient) UpdateBook(ctx context.Context, in *UpdateBookReq, opt
 	return out, nil
 }
 
-func (c *bookstoreClient) DeleteBook(ctx context.Context, in *DeleteBookReq, opts ...grpc.CallOption) (*DeleteBookRes, error) {
+func (c *bookstoreClient) DeleteBook(ctx context.Context, in *GetBookReq, opts ...grpc.CallOption) (*DeleteBookRes, error) {
 	out := new(DeleteBookRes)
 	err := c.cc.Invoke(ctx, "/book.Bookstore/DeleteBook", in, out, opts...)
 	if err != nil {
@@ -69,24 +69,47 @@ func (c *bookstoreClient) DeleteBook(ctx context.Context, in *DeleteBookReq, opt
 	return out, nil
 }
 
-func (c *bookstoreClient) GetAllBooks(ctx context.Context, in *GetAllReq, opts ...grpc.CallOption) (*GetAllRes, error) {
-	out := new(GetAllRes)
-	err := c.cc.Invoke(ctx, "/book.Bookstore/GetAllBooks", in, out, opts...)
+func (c *bookstoreClient) GetAllBooks(ctx context.Context, in *GetAllReq, opts ...grpc.CallOption) (Bookstore_GetAllBooksClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Bookstore_ServiceDesc.Streams[0], "/book.Bookstore/GetAllBooks", opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &bookstoreGetAllBooksClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type Bookstore_GetAllBooksClient interface {
+	Recv() (*BookResponse, error)
+	grpc.ClientStream
+}
+
+type bookstoreGetAllBooksClient struct {
+	grpc.ClientStream
+}
+
+func (x *bookstoreGetAllBooksClient) Recv() (*BookResponse, error) {
+	m := new(BookResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 // BookstoreServer is the server API for Bookstore service.
 // All implementations must embed UnimplementedBookstoreServer
 // for forward compatibility
 type BookstoreServer interface {
-	PostBook(context.Context, *PostBookReq) (*PostBookRes, error)
-	GetBook(context.Context, *GetBookReq) (*GetBookRes, error)
-	UpdateBook(context.Context, *UpdateBookReq) (*UpdateBookRes, error)
-	DeleteBook(context.Context, *DeleteBookReq) (*DeleteBookRes, error)
-	GetAllBooks(context.Context, *GetAllReq) (*GetAllRes, error)
+	PostBook(context.Context, *BookRequest) (*BookResponse, error)
+	GetBook(context.Context, *GetBookReq) (*BookResponse, error)
+	UpdateBook(context.Context, *BookRequest) (*BookResponse, error)
+	DeleteBook(context.Context, *GetBookReq) (*DeleteBookRes, error)
+	GetAllBooks(*GetAllReq, Bookstore_GetAllBooksServer) error
 	mustEmbedUnimplementedBookstoreServer()
 }
 
@@ -94,20 +117,20 @@ type BookstoreServer interface {
 type UnimplementedBookstoreServer struct {
 }
 
-func (UnimplementedBookstoreServer) PostBook(context.Context, *PostBookReq) (*PostBookRes, error) {
+func (UnimplementedBookstoreServer) PostBook(context.Context, *BookRequest) (*BookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method PostBook not implemented")
 }
-func (UnimplementedBookstoreServer) GetBook(context.Context, *GetBookReq) (*GetBookRes, error) {
+func (UnimplementedBookstoreServer) GetBook(context.Context, *GetBookReq) (*BookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBook not implemented")
 }
-func (UnimplementedBookstoreServer) UpdateBook(context.Context, *UpdateBookReq) (*UpdateBookRes, error) {
+func (UnimplementedBookstoreServer) UpdateBook(context.Context, *BookRequest) (*BookResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateBook not implemented")
 }
-func (UnimplementedBookstoreServer) DeleteBook(context.Context, *DeleteBookReq) (*DeleteBookRes, error) {
+func (UnimplementedBookstoreServer) DeleteBook(context.Context, *GetBookReq) (*DeleteBookRes, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteBook not implemented")
 }
-func (UnimplementedBookstoreServer) GetAllBooks(context.Context, *GetAllReq) (*GetAllRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllBooks not implemented")
+func (UnimplementedBookstoreServer) GetAllBooks(*GetAllReq, Bookstore_GetAllBooksServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetAllBooks not implemented")
 }
 func (UnimplementedBookstoreServer) mustEmbedUnimplementedBookstoreServer() {}
 
@@ -123,7 +146,7 @@ func RegisterBookstoreServer(s grpc.ServiceRegistrar, srv BookstoreServer) {
 }
 
 func _Bookstore_PostBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PostBookReq)
+	in := new(BookRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -135,7 +158,7 @@ func _Bookstore_PostBook_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/book.Bookstore/PostBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookstoreServer).PostBook(ctx, req.(*PostBookReq))
+		return srv.(BookstoreServer).PostBook(ctx, req.(*BookRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -159,7 +182,7 @@ func _Bookstore_GetBook_Handler(srv interface{}, ctx context.Context, dec func(i
 }
 
 func _Bookstore_UpdateBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateBookReq)
+	in := new(BookRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -171,13 +194,13 @@ func _Bookstore_UpdateBook_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/book.Bookstore/UpdateBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookstoreServer).UpdateBook(ctx, req.(*UpdateBookReq))
+		return srv.(BookstoreServer).UpdateBook(ctx, req.(*BookRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Bookstore_DeleteBook_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DeleteBookReq)
+	in := new(GetBookReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -189,27 +212,30 @@ func _Bookstore_DeleteBook_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: "/book.Bookstore/DeleteBook",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookstoreServer).DeleteBook(ctx, req.(*DeleteBookReq))
+		return srv.(BookstoreServer).DeleteBook(ctx, req.(*GetBookReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Bookstore_GetAllBooks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetAllReq)
-	if err := dec(in); err != nil {
-		return nil, err
+func _Bookstore_GetAllBooks_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetAllReq)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
 	}
-	if interceptor == nil {
-		return srv.(BookstoreServer).GetAllBooks(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/book.Bookstore/GetAllBooks",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(BookstoreServer).GetAllBooks(ctx, req.(*GetAllReq))
-	}
-	return interceptor(ctx, in, info, handler)
+	return srv.(BookstoreServer).GetAllBooks(m, &bookstoreGetAllBooksServer{stream})
+}
+
+type Bookstore_GetAllBooksServer interface {
+	Send(*BookResponse) error
+	grpc.ServerStream
+}
+
+type bookstoreGetAllBooksServer struct {
+	grpc.ServerStream
+}
+
+func (x *bookstoreGetAllBooksServer) Send(m *BookResponse) error {
+	return x.ServerStream.SendMsg(m)
 }
 
 // Bookstore_ServiceDesc is the grpc.ServiceDesc for Bookstore service.
@@ -235,11 +261,13 @@ var Bookstore_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "DeleteBook",
 			Handler:    _Bookstore_DeleteBook_Handler,
 		},
+	},
+	Streams: []grpc.StreamDesc{
 		{
-			MethodName: "GetAllBooks",
-			Handler:    _Bookstore_GetAllBooks_Handler,
+			StreamName:    "GetAllBooks",
+			Handler:       _Bookstore_GetAllBooks_Handler,
+			ServerStreams: true,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
 	Metadata: "book.proto",
 }
