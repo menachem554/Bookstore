@@ -7,6 +7,7 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -15,6 +16,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
+	"github.com/joho/godotenv"
 	pb "github.com/menachem554/Bookstore/proto"
 )
 
@@ -154,58 +156,68 @@ func (s *server) GetAllBooks(req *pb.GetAllReq, stream pb.Bookstore_GetAllBooksS
 }
 
 func main() {
-		// connect on port 9090
-		listener, err := net.Listen("tcp", ":9090")
-	
-		if err != nil {
-			log.Fatalf("Unable to listen on port :9090: %v", err)
+	// log if go crash, with the file name and line number
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+
+	// get env vars
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+
+	// mongoLocal := os.Getenv("MONGO_LOCAL")
+	mongoImage := os.Getenv("MONGO_IMAGE")
+
+	// create the mongo context
+	mongoCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	// connect MongoDB
+	fmt.Println("Connecting to MongoDB...")
+	client, err := mongo.Connect(mongoCtx, options.Client().ApplyURI(mongoImage))
+	if err != nil {
+		log.Fatalf("Error Starting MongoDB Client: %v", err)
+	}
+
+	// check the connection
+	err = client.Ping(mongoCtx, nil)
+	if err != nil {
+		log.Fatalf("Could not connect to MongoDB: %v\n", err)
+	} else {
+		fmt.Println("Connected to Mongodb")
+	}
+
+	bookDB = client.Database("Bookstore").Collection("books")
+
+	fmt.Println("Starting Listener...")
+	l, err := net.Listen("tcp", "0.0.0.0:9090")
+	if err != nil {
+		log.Fatalf("Failed to listen: %v", err)
+	}
+
+	opts := []grpc.ServerOption{}
+	s := grpc.NewServer(opts...)
+	pb.RegisterBookstoreServer(s, &server{})
+
+	// Start a GO Routine
+	go func() {
+		fmt.Println("Bookstore Server Started...")
+		if err := s.Serve(l); err != nil {
+			log.Fatalf("Failed to start server: %v", err)
 		}
-	
-		// gRPC options and Register
-		opts := []grpc.ServerOption{}
-		s := grpc.NewServer(opts...)
-		pb.RegisterBookstoreServer(s, &server{})
-	
-		// Connect to mongoDB
-		mongoCtx = context.Background()
-		db, err = mongo.Connect(mongoCtx, options.Client().ApplyURI("mongodb://localhost:27017"))
-		if err != nil {
-			log.Fatal(err)
-		}
-	
-		// check the connection
-		err = db.Ping(mongoCtx, nil)
-		if err != nil {
-			log.Fatalf("Could not connect to MongoDB: %v\n", err)
-		} else {
-			fmt.Println("Connected to Mongodb")
-		}
-	
-		// Define the db and collection
-		bookDB = db.Database("Bookstore").Collection("books")
-	
-		// Start the server in a child routine
-		go func() {
-			if err := s.Serve(listener); err != nil {
-				log.Fatalf("Failed to serve: %v", err)
-			}
-		}()
-		fmt.Println("Server successfully started on port :9090")
-	
-		// Create a channel to receive OS signals
-		c := make(chan os.Signal)
-	
-		// Relay os.Interrupt to our channel (os.Interrupt = CTRL+C)
-		signal.Notify(c, os.Interrupt)
-	
-		// Block main routine until a signal is received until CTRL+C was detected
-		<-c
-	
-		// After receiving CTRL+C Properly stop the server
-		fmt.Println("\nStopping the server...")
-		s.Stop()
-		listener.Close()
-		fmt.Println("Closing MongoDB connection")
-		db.Disconnect(mongoCtx)
-		fmt.Println("Done.")
+	}()
+
+	// Wait to exit (Ctrl+C)
+	ch := make(chan os.Signal, 1)
+	signal.Notify(ch, os.Interrupt)
+
+	// Block the channel until the signal is received
+	<-ch
+	fmt.Println("Stopping Bookstore Server...")
+	s.Stop()
+	fmt.Println("Closing Listener...")
+	l.Close()
+	fmt.Println("Closing MongoDB...")
+	client.Disconnect(mongoCtx)
+	fmt.Println("All done!")
 }
