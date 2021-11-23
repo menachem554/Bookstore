@@ -166,7 +166,7 @@ func main() {
 	}
 
 	// mongoLocal := os.Getenv("MONGO_LOCAL")
-	mongoImage := os.Getenv("MONGO_LOCAL")
+	mongoImage := os.Getenv("MONGO_IMAGE")
 
 	// create the mongo context
 	mongoCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
