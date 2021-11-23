@@ -33,7 +33,7 @@ var mongoCtx context.Context
 type BookInterface struct {
 	BookID   string `bson:bookId`
 	BookName string `bson:bookName`
-	Title    string `bson:title`
+	Category    string `bson:category`
 	Author   string `bson:author`
 }
 
@@ -42,7 +42,7 @@ func BookToProto(data *BookInterface) *pb.Book {
 	return &pb.Book{
 		BookID:   data.BookID,
 		BookName: data.BookName,
-		Title:    data.Title,
+		Category:    data.Category,
 		Author:   data.Author,
 	}
 }
@@ -55,7 +55,7 @@ func (s *server) PostBook(ctx context.Context, req *pb.BookRequest) (*pb.BookRes
 	data := BookInterface{
 		BookID:   book.GetBookID(),
 		BookName: book.GetBookName(),
-		Title:    book.GetTitle(),
+		Category:    book.GetCategory(),
 		Author:   book.GetAuthor(),
 	}
 
@@ -96,7 +96,7 @@ func (s *server) UpdateBook(ctx context.Context, req *pb.BookRequest) (*pb.BookR
 	data := bson.M{
 		"bookid":   req.GetBook().BookID,
 		"bookname": req.GetBook().BookName,
-		"title":    req.GetBook().Title,
+		"category":    req.GetBook().Category,
 		"author":   req.GetBook().Author,
 	}
 	// insert the changes
@@ -111,7 +111,7 @@ func (s *server) UpdateBook(ctx context.Context, req *pb.BookRequest) (*pb.BookR
 		Book: &pb.Book{
 			BookID:   req.GetBook().BookID,
 			BookName: req.GetBook().BookName,
-			Title:    req.GetBook().Title,
+			Category:    req.GetBook().Category,
 			Author:   req.GetBook().Author,
 		},
 	}, nil
