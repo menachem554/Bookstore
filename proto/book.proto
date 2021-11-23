@@ -17,12 +17,7 @@ service Bookstore {
 message Book {
     string bookID= 1;
     string bookName = 2;
-    enum category { 
-        ACTION = 0;
-        COMIC = 1;
-        FANTASY = 2;
-        HISTORICAL = 3;
-    };
+    string category = 3;
     string author = 4;
 }
 
