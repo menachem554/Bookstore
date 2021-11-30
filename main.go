@@ -33,7 +33,7 @@ var mongoCtx context.Context
 type BookInterface struct {
 	BookID   string `bson:bookId`
 	BookName string `bson:bookName`
-	Category    string `bson:category`
+	Category string `bson:category`
 	Author   string `bson:author`
 }
 
@@ -42,7 +42,7 @@ func BookToProto(data *BookInterface) *pb.Book {
 	return &pb.Book{
 		BookID:   data.BookID,
 		BookName: data.BookName,
-		Category:    data.Category,
+		Category: data.Category,
 		Author:   data.Author,
 	}
 }
@@ -55,7 +55,7 @@ func (s *server) PostBook(ctx context.Context, req *pb.BookRequest) (*pb.BookRes
 	data := BookInterface{
 		BookID:   book.GetBookID(),
 		BookName: book.GetBookName(),
-		Category:    book.GetCategory(),
+		Category: book.GetCategory(),
 		Author:   book.GetAuthor(),
 	}
 
@@ -84,7 +84,7 @@ func (s *server) GetBook(ctx context.Context, req *pb.GetBookReq) (*pb.BookRespo
 		return nil,
 			status.Errorf(codes.NotFound, fmt.Sprintf("Cannot found book with the ID: %v", err))
 	}
-	fmt.Println("Get book result", res)
+	fmt.Println("Get book result", data)
 	return &pb.BookResponse{Book: BookToProto(data)}, nil
 }
 
@@ -94,15 +94,15 @@ func (s *server) UpdateBook(ctx context.Context, req *pb.BookRequest) (*pb.BookR
 	book := req.GetBook()
 
 	data := bson.M{
-		"bookid":   req.GetBook().BookID,
-		"bookname": req.GetBook().BookName,
-		"category":    req.GetBook().Category,
-		"author":   req.GetBook().Author,
+		"bookid":   book.BookID,
+		"bookname": book.BookName,
+		"category": book.Category,
+		"author":   book.Author,
 	}
 	// insert the changes
 	bookDB.FindOneAndUpdate(
 		ctx,
-		bson.M{"bookid": req.GetBook().BookID},
+		bson.M{"bookid": book.BookID},
 		bson.M{"$set": data})
 
 	fmt.Println("the decode result is:", book)
@@ -111,7 +111,7 @@ func (s *server) UpdateBook(ctx context.Context, req *pb.BookRequest) (*pb.BookR
 		Book: &pb.Book{
 			BookID:   req.GetBook().BookID,
 			BookName: req.GetBook().BookName,
-			Category:    req.GetBook().Category,
+			Category: req.GetBook().Category,
 			Author:   req.GetBook().Author,
 		},
 	}, nil
@@ -166,7 +166,7 @@ func main() {
 	}
 
 	// mongoLocal := os.Getenv("MONGO_LOCAL")
-	mongoImage := os.Getenv("MONGO_IMAGE")
+	mongoImage := os.Getenv("MONGO_LOCAL")
 
 	// create the mongo context
 	mongoCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

@@ -11,7 +11,7 @@ service Bookstore {
     rpc GetBook(GetBookReq) returns (BookResponse);
     rpc UpdateBook(BookRequest) returns (BookResponse);
     rpc DeleteBook(GetBookReq) returns (DeleteBookRes);
-    rpc GetAllBooks(GetAllReq) returns (stream BookResponse);
+    rpc GetAllBooks(GetAllReq) returns (GetAllResponse);
 }
 
 message Book {
@@ -30,3 +30,5 @@ message GetBookReq {string id = 1;}
 message DeleteBookRes {int64 deleted = 1;}
 
 message GetAllReq {};
+
+message GetAllResponse {repeated Book book = 1}
