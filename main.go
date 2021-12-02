@@ -133,26 +133,36 @@ func (s *server) DeleteBook(ctx context.Context, req *pb.GetBookReq) (*pb.Delete
 }
 
 // Get all books in the Collection
-func (s *server) GetAllBooks(req *pb.GetAllReq, stream pb.Bookstore_GetAllBooksServer) error {
+func (s *server) GetAllBooks(ctx context.Context, req *pb.GetAllReq) (*pb.GetAllResponse, error) {
 	fmt.Println("\n list of all book start stream")
-	cur, err := bookDB.Find(context.Background(), bson.D{})
+
+	res, err := bookDB.Find(context.Background(), bson.M{})
 	if err != nil {
-		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown Internal Error: %v", err))
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Unknown Internal Error: %v", err))
 	}
 
-	defer cur.Close(context.Background())
+	defer res.Close(context.Background())
 
-	for cur.Next(context.Background()) {
-		data := &BookInterface{}
-		if err := cur.Decode(data); err != nil {
-			return status.Errorf(codes.Internal, fmt.Sprintf("Cannot decoding data: %v", err))
+	var books = []*BookInterface{}
+
+	for res.Next(context.Background()) {
+		var data = &BookInterface{}
+		if err := res.Decode(data); err != nil {
+			return nil, status.Errorf(codes.Internal, fmt.Sprintf("Cannot decoding data: %v", err))
 		}
-		stream.Send(&pb.BookResponse{Book: BookToProto(data)})
+		books = append(books, data)
 	}
-	if err = cur.Err(); err != nil {
-		return status.Errorf(codes.Internal, fmt.Sprintf("Unknown Internal Error: %v", err))
+	if err = res.Err(); err != nil {
+		return nil, status.Errorf(codes.Internal, fmt.Sprintf("Unknown Internal Error: %v", err))
 	}
-	return nil
+	var pbbooks = []*pb.Book{}
+	for _, data := range books {
+		fmt.Println(data)
+		pbbooks = append(pbbooks, &pb.Book{BookID: data.BookID, BookName: data.BookName,
+			Category: data.Category, Author: data.Author})
+	}
+	fmt.Println(pbbooks)
+	return &pb.GetAllResponse{Book: pbbooks}, nil
 }
 
 func main() {

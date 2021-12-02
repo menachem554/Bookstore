@@ -31,4 +31,4 @@ message DeleteBookRes {int64 deleted = 1;}
 
 message GetAllReq {};
 
-message GetAllResponse {repeated Book book = 1}
+message GetAllResponse {repeated Book book = 1;}
